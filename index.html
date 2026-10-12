@@ -1,0 +1,3890 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>เครื่องคำนวณภาษีเงินได้บุคคลธรรมดา ปีภาษี 2569 — v6.0</title>
+
+<style>
+:root{
+    --p:#1e3a8a;
+    --pl:#2563eb;
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --tx:#172033;
+    --mut:#64748b;
+    --bd:#dbe3ef;
+    --ok:#15803d;
+    --warn:#b45309;
+    --err:#b91c1c;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    font-family:
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        Tahoma,
+        "Noto Sans Thai",
+        sans-serif;
+    color:var(--tx);
+}
+
+.wrap{
+    max-width:1180px;
+    margin:auto;
+    padding:18px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#172554,#2563eb);
+    color:#fff;
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 8px 30px #0001;
+}
+
+.hero h1{
+    margin:0 0 6px;
+    font-size:25px;
+}
+
+.hero p{
+    margin:0;
+    opacity:.9;
+}
+
+nav{
+    display:flex;
+    gap:7px;
+    overflow:auto;
+    margin:14px 0;
+}
+
+.tab{
+    border:1px solid var(--bd);
+    background:#fff;
+    padding:10px 14px;
+    border-radius:10px;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.tab.active{
+    background:var(--p);
+    color:#fff;
+    border-color:var(--p);
+}
+
+section{
+    display:none;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--bd);
+    border-radius:15px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:0 3px 12px #00000008;
+}
+
+.card h2{
+    font-size:18px;
+    margin:0 0 14px;
+}
+
+.card h3{
+    margin-top:22px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+}
+
+.grid3{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+}
+
+label{
+    display:block;
+    font-size:14px;
+    font-weight:650;
+    margin-bottom:6px;
+}
+
+input,
+select{
+    width:100%;
+    padding:10px 11px;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    background:#fff;
+    font:inherit;
+}
+
+input:focus,
+select:focus{
+    outline:2px solid #93c5fd;
+    border-color:#2563eb;
+}
+
+input[readonly]{
+    background:#f8fafc;
+    color:#334155;
+}
+
+.check{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:500;
+    margin:9px 0;
+}
+
+.check input{
+    width:auto;
+}
+
+.help{
+    font-size:12px;
+    color:var(--mut);
+    margin-top:5px;
+}
+
+.notice{
+    padding:12px;
+    border-radius:10px;
+    margin:10px 0;
+    font-size:13px;
+}
+
+.info{
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+}
+
+.warn{
+    background:#fffbeb;
+    border:1px solid #fde68a;
+}
+
+.danger{
+    background:#fef2f2;
+    border:1px solid #fecaca;
+}
+
+.ok{
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:12px 0;
+}
+
+.btn{
+    border:0;
+    border-radius:10px;
+    padding:11px 15px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.primary{
+    background:var(--p);
+    color:#fff;
+}
+
+.secondary{
+    background:#e2e8f0;
+    color:#172033;
+}
+
+.green{
+    background:#15803d;
+    color:#fff;
+}
+
+.red{
+    background:#b91c1c;
+    color:#fff;
+}
+
+.result{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.metric{
+    background:#f8fafc;
+    border:1px solid var(--bd);
+    border-radius:12px;
+    padding:14px;
+}
+
+.metric .v{
+    font-size:22px;
+    font-weight:800;
+    margin-top:5px;
+}
+
+.metric .k{
+    font-size:12px;
+    color:var(--mut);
+}
+
+.age-box{
+    background:linear-gradient(135deg,#eff6ff,#f8fafc);
+    border:1px solid #bfdbfe;
+    border-radius:12px;
+    padding:14px;
+}
+
+.age-big{
+    font-size:24px;
+    font-weight:800;
+    color:#1e3a8a;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+}
+
+th,
+td{
+    border-bottom:1px solid var(--bd);
+    padding:8px;
+    text-align:right;
+}
+
+th:first-child,
+td:first-child{
+    text-align:left;
+}
+
+th{
+    background:#f8fafc;
+}
+
+.audit{
+    max-height:430px;
+    overflow:auto;
+}
+
+.audit div{
+    padding:7px 0;
+    border-bottom:1px dashed var(--bd);
+}
+
+.muted{
+    color:var(--mut);
+}
+
+.hidden{
+    display:none!important;
+}
+
+.birth-summary{
+    margin-top:12px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.birth-stat{
+    padding:12px;
+    border:1px solid var(--bd);
+    border-radius:10px;
+    background:#fff;
+}
+
+.birth-stat small{
+    display:block;
+    color:var(--mut);
+}
+
+.birth-stat strong{
+    display:block;
+    margin-top:3px;
+}
+
+@media(max-width:800px){
+
+    .grid,
+    .grid3,
+    .result,
+    .birth-summary{
+        grid-template-columns:1fr;
+    }
+
+    .wrap{
+        padding:10px;
+    }
+
+    .hero{
+        padding:18px;
+    }
+
+    .hero h1{
+        font-size:21px;
+    }
+}
+
+@media print{
+
+    nav,
+    .actions,
+    .no-print{
+        display:none!important;
+    }
+
+    body{
+        background:#fff;
+    }
+
+    .card{
+        box-shadow:none;
+        break-inside:avoid;
+    }
+
+    .wrap{
+        max-width:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<header class="hero">
+
+<h1>
+เครื่องคำนวณภาษีเงินได้บุคคลธรรมดา ปีภาษี 2569
+</h1>
+
+<p>
+Filing-oriented Tax Calculator • Version 6.0
+</p>
+
+</header>
+
+<div class="notice warn">
+
+<b>คำเตือน:</b>
+เครื่องมือนี้เป็นเครื่องคำนวณเพื่อช่วยตรวจสอบภาษี
+ไม่ใช่ระบบยื่นภาษีของกรมสรรพากรโดยตรง
+กรณีที่มีรายการพิเศษ ระบบจะแจ้งเตือนและไม่เดาผลให้
+
+</div>
+
+<nav class="no-print">
+
+<button class="tab active"
+onclick="tab('person',this)">
+1 บุคคล/ครอบครัว
+</button>
+
+<button class="tab"
+onclick="tab('income',this)">
+2 เงินได้
+</button>
+
+<button class="tab"
+onclick="tab('deduct',this)">
+3 ลดหย่อน
+</button>
+
+<button class="tab"
+onclick="tab('taxpaid',this)">
+4 ภาษีที่จ่ายแล้ว
+</button>
+
+<button class="tab"
+onclick="tab('result',this)">
+5 ผลคำนวณ
+</button>
+
+</nav>
+
+
+<!-- =========================================
+     1. PERSON
+========================================= -->
+
+<section id="person" style="display:block">
+
+<div class="card">
+
+<h2>ข้อมูลผู้มีเงินได้</h2>
+
+<div class="grid3">
+
+<div>
+
+<label>
+วันเดือนปีเกิด
+</label>
+
+<input
+    id="birthDate"
+    type="date"
+>
+
+<div class="help">
+ระบบจะคำนวณอายุจากวันเกิดให้อัตโนมัติ
+</div>
+
+</div>
+
+
+<div class="age-box">
+
+<label>
+อายุปัจจุบัน
+</label>
+
+<div
+    id="ageDisplay"
+    class="age-big">
+ยังไม่ได้ระบุ
+</div>
+
+<div
+    id="ageDetail"
+    class="help">
+กรุณาเลือกวันเดือนปีเกิด
+</div>
+
+</div>
+
+
+<div class="age-box">
+
+<label>
+จำนวนวันที่มีชีวิตอยู่
+</label>
+
+<div
+    id="livedDays"
+    class="age-big">
+-
+</div>
+
+<div class="help">
+แสดงเพื่อข้อมูลเท่านั้น
+ไม่ใช่จำนวนวันที่อยู่ประเทศไทย
+</div>
+
+</div>
+
+</div>
+
+
+<div class="birth-summary">
+
+<div class="birth-stat">
+
+<small>ปีเต็ม</small>
+
+<strong id="ageYears">
+-
+</strong>
+
+</div>
+
+<div class="birth-stat">
+
+<small>เดือนที่เหลือ</small>
+
+<strong id="ageMonths">
+-
+</strong>
+
+</div>
+
+<div class="birth-stat">
+
+<small>วันที่เหลือ</small>
+
+<strong id="ageDays">
+-
+</strong>
+
+</div>
+
+</div>
+
+
+<!-- Hidden values used by calculation -->
+
+<input
+    id="age"
+    type="hidden"
+    value="0"
+>
+
+<!--
+ไม่ใช้ days เป็นจำนวนวันที่อยู่ประเทศไทย
+เก็บจำนวนวันที่มีชีวิตอยู่แยกไว้เท่านั้น
+-->
+<input
+    id="livedDaysRaw"
+    type="hidden"
+    value="0"
+>
+
+
+<div class="grid3"
+style="margin-top:15px">
+
+<div>
+
+<label>
+สถานภาพ
+</label>
+
+<select id="marital">
+
+<option value="single">
+โสด
+</option>
+
+<option value="m_no">
+สมรส — คู่สมรสไม่มีเงินได้
+</option>
+
+<option value="m_inc">
+สมรส — ต่างฝ่ายมีเงินได้
+</option>
+
+<option value="m_mid">
+สมรสระหว่างปี
+</option>
+
+<option value="d_mid">
+หย่าระหว่างปี
+</option>
+
+<option value="m_death">
+คู่สมรสถึงแก่ความตายระหว่างปี
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>
+เงินได้ของคู่สมรสทั้งปี
+</label>
+
+<input
+    id="spouseIncome"
+    type="number"
+    min="0"
+    value="0"
+>
+
+</div>
+
+
+<div>
+
+<label>
+บุตรที่เข้าเงื่อนไข
+</label>
+
+<input
+    id="children"
+    type="number"
+    min="0"
+    value="0"
+>
+
+</div>
+
+</div>
+
+
+<div class="grid3">
+
+<div>
+
+<label>
+บุตรที่เกิดตั้งแต่ปี 2561 เป็นต้นไป
+</label>
+
+<input
+    id="youngChildren"
+    type="number"
+    min="0"
+    value="0"
+>
+
+<div class="help">
+กรอกเฉพาะบุตรที่เข้าเงื่อนไขจริง
+</div>
+
+</div>
+
+
+<div>
+
+<label>
+บิดามารดาที่อุปการะได้
+</label>
+
+<input
+    id="parents"
+    type="number"
+    min="0"
+    max="4"
+    value="0"
+>
+
+</div>
+
+
+<div>
+
+<label>
+คนพิการ/ทุพพลภาพที่อุปการะได้
+</label>
+
+<input
+    id="disabledDeps"
+    type="number"
+    min="0"
+    value="0"
+>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div>
+
+<label>
+ค่าใช้จ่ายฝากครรภ์/คลอดบุตรที่เข้าเงื่อนไข
+</label>
+
+<input
+    id="maternity"
+    type="number"
+    min="0"
+    value="0"
+>
+
+</div>
+
+<div>
+
+<label>
+วันที่อยู่ประเทศไทยในปีภาษี
+</label>
+
+<input
+    id="thaiDays"
+    type="number"
+    min="0"
+    max="366"
+    value="365"
+>
+
+<div class="help">
+ช่องนี้ยังต้องกรอกเอง เพราะไม่สามารถคำนวณจากวันเกิดได้
+</div>
+
+</div>
+
+</div>
+
+
+<div class="notice info">
+
+<b>แยกข้อมูลให้ถูกต้อง:</b>
+
+วันเกิดใช้คำนวณอายุ
+
+ส่วน “จำนวนวันที่อยู่ประเทศไทย”
+เป็นข้อมูลเกี่ยวกับการพำนักในประเทศไทย
+จึงยังต้องกรอกแยกต่างหาก
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     2. INCOME
+========================================= -->
+
+<section id="income">
+
+<div class="card">
+
+<h2>
+เงินได้ตามมาตรา 40
+</h2>
+
+<div class="grid">
+
+<div>
+<label>
+40(1) เงินเดือน/ค่าจ้าง/โบนัส/บำนาญ
+</label>
+
+<input
+id="i1"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+40(2) ค่าธรรมเนียม/ค่านายหน้า/รับทำงานให้
+</label>
+
+<input
+id="i2"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+40(3) ค่าลิขสิทธิ์/กู๊ดวิลล์/เงินปี/สิทธิ
+</label>
+
+<input
+id="i3"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+40(4) ดอกเบี้ย/เงินปันผล/เงินได้จากการลงทุน
+</label>
+
+<input
+id="i4"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+40(5) ค่าเช่า/เช่าซื้อ
+</label>
+
+<input
+id="i5"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+40(6) วิชาชีพอิสระ
+</label>
+
+<input
+id="i6"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+40(7) รับเหมาที่ลงทุนวัสดุสำคัญ
+</label>
+
+<input
+id="i7"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+40(8) ธุรกิจ/พาณิชย์/เกษตร/อุตสาหกรรม/อื่น ๆ
+</label>
+
+<input
+id="i8"
+type="number"
+min="0"
+value="0">
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+วิธีหักค่าใช้จ่าย
+</h2>
+
+
+<div class="grid3">
+
+<div>
+
+<label>
+40(3)
+</label>
+
+<select id="e3">
+
+<option value="50">
+เหมา 50%
+</option>
+
+<option value="actual">
+ตามจริง
+</option>
+
+</select>
+
+<input
+id="e3actual"
+class="hidden"
+type="number"
+min="0"
+value="0">
+
+</div>
+
+
+<div>
+
+<label>
+40(5)
+</label>
+
+<select id="e5">
+
+<option value="30">
+เช่าอาคาร/สิ่งปลูกสร้าง 30%
+</option>
+
+<option value="20">
+เช่าที่ดิน 20%
+</option>
+
+<option value="15">
+เช่าทรัพย์สินอื่น 15%
+</option>
+
+<option value="10">
+ให้เช่าช่วง 10%
+</option>
+
+<option value="actual">
+ตามจริง
+</option>
+
+</select>
+
+<input
+id="e5actual"
+class="hidden"
+type="number"
+min="0"
+value="0">
+
+</div>
+
+
+<div>
+
+<label>
+40(6)
+</label>
+
+<select id="e6">
+
+<option value="60">
+ประกอบโรคศิลปะ 60%
+</option>
+
+<option value="30">
+วิชาชีพอิสระอื่น 30%
+</option>
+
+<option value="actual">
+ตามจริง
+</option>
+
+</select>
+
+<input
+id="e6actual"
+class="hidden"
+type="number"
+min="0"
+value="0">
+
+</div>
+
+
+<div>
+
+<label>
+40(7)
+</label>
+
+<select id="e7">
+
+<option value="70">
+เหมา 70%
+</option>
+
+<option value="actual">
+ตามจริง
+</option>
+
+</select>
+
+<input
+id="e7actual"
+class="hidden"
+type="number"
+min="0"
+value="0">
+
+</div>
+
+
+<div>
+
+<label>
+40(8)
+</label>
+
+<select id="e8">
+
+<option value="60">
+อัตรา 60%
+</option>
+
+<option value="65">
+อัตรา 65%
+</option>
+
+<option value="70">
+อัตรา 70%
+</option>
+
+<option value="75">
+อัตรา 75%
+</option>
+
+<option value="80">
+อัตรา 80%
+</option>
+
+<option value="85">
+อัตรา 85%
+</option>
+
+<option value="actual">
+ตามจริง
+</option>
+
+</select>
+
+<input
+id="e8actual"
+class="hidden"
+type="number"
+min="0"
+value="0">
+
+</div>
+
+
+<div>
+
+<label>
+นักแสดง/นักร้อง/นักดนตรี/นักกีฬาอาชีพ
+</label>
+
+<select id="performer">
+
+<option value="no">
+ไม่ใช่
+</option>
+
+<option value="yes">
+ใช่
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="notice warn">
+
+<b>สำคัญ:</b>
+40(8) ไม่ได้มีค่าใช้จ่ายเหมา 60% สำหรับทุกกิจการ
+ประเภทเงินได้ต่างกันใช้อัตราต่างกัน
+และบางประเภทต้องหักค่าใช้จ่ายจริง
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+เงินปันผล / ดอกเบี้ย
+</h2>
+
+<div class="grid3">
+
+<div>
+
+<label>
+เงินปันผลที่นำมารวมคำนวณ
+</label>
+
+<input
+id="div"
+type="number"
+min="0"
+value="0">
+
+</div>
+
+
+<div>
+
+<label>
+เครดิตภาษีเงินปันผล
+</label>
+
+<input
+id="divCr"
+type="number"
+min="0"
+value="0">
+
+</div>
+
+
+<div>
+
+<label>
+ดอกเบี้ยที่เลือกเสียภาษีแยก 15%
+</label>
+
+<input
+id="interestFinal"
+type="number"
+min="0"
+value="0">
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+รายการพิเศษ
+</h2>
+
+<label class="check">
+<input id="foreign" type="checkbox">
+มีเงินได้จากต่างประเทศ / Foreign Tax Credit
+</label>
+
+<label class="check">
+<input id="propertySpecial" type="checkbox">
+มีการขายอสังหาริมทรัพย์หรือกรณีภาษีพิเศษ
+</label>
+
+<label class="check">
+<input id="special40" type="checkbox">
+มีเงินได้ 40(3)/(4) กรณีพิเศษ
+</label>
+
+<label class="check">
+<input id="otherSpecial" type="checkbox">
+มีกรณีอื่นที่ไม่แน่ใจ
+</label>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     3. DEDUCTIONS
+========================================= -->
+
+<section id="deduct">
+
+<div class="card">
+
+<h2>
+ค่าลดหย่อน
+</h2>
+
+<div class="grid3">
+
+<div>
+<label>
+ประกันสังคม ม.33
+</label>
+
+<input
+id="sso33"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ประกันสังคม ม.39
+</label>
+
+<input
+id="sso39"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ประกันสังคม ม.40
+</label>
+
+<input
+id="sso40"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ประกันชีวิต
+</label>
+
+<input
+id="life"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ประกันสุขภาพตนเอง
+</label>
+
+<input
+id="health"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ประกันชีวิตคู่สมรส
+</label>
+
+<input
+id="spouseLife"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ประกันสุขภาพบิดามารดา
+</label>
+
+<input
+id="parentHealth"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ดอกเบี้ยกู้ซื้อ/สร้างบ้าน
+</label>
+
+<input
+id="homeInt"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+เงินบริจาคทั่วไป
+</label>
+
+<input
+id="donation"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+บริจาคที่เข้าเกณฑ์ 2 เท่า
+</label>
+
+<input
+id="donation2x"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+บริจาคพรรคการเมือง
+</label>
+
+<input
+id="political"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+Solar Rooftop ที่เข้าเงื่อนไข
+</label>
+
+<input
+id="solar"
+type="number"
+min="0"
+value="0">
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+กองทุน / เงินออม
+</h2>
+
+<div class="grid3">
+
+<div>
+<label>
+PVD
+</label>
+
+<input
+id="pvd"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+กบข. (GPF)
+</label>
+
+<input
+id="gpf"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+กองทุนสงเคราะห์ครูโรงเรียนเอกชน
+</label>
+
+<input
+id="teacher"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+RMF
+</label>
+
+<input
+id="rmf"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ประกันชีวิตแบบบำนาญ
+</label>
+
+<input
+id="pensionIns"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+Thai ESG
+</label>
+
+<input
+id="thaiEsg"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+Thai ESGX ซื้อใหม่
+</label>
+
+<input
+id="thaiEsgxNew"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+Thai ESGX จาก LTF
+</label>
+
+<input
+id="thaiEsgxLtf"
+type="number"
+min="0"
+value="0">
+</div>
+
+</div>
+
+
+<div class="notice warn">
+
+Thai ESGX จาก LTF มีเงื่อนไขเฉพาะและไม่ควรนำยอด LTF มาใส่แล้วให้ระบบเดาสิทธิเอง
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+สิทธิผู้มีอายุ 65 ปีขึ้นไป
+</h2>
+
+<label class="check">
+
+<input
+id="seniorEligible"
+type="checkbox">
+
+ยืนยันว่าเข้าเงื่อนไขสิทธิผู้มีอายุ 65 ปีขึ้นไป
+
+</label>
+
+<div
+id="seniorStatus"
+class="notice info">
+
+ระบบจะตรวจอายุจากวันเกิดให้อัตโนมัติ
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     4. TAX PAID
+========================================= -->
+
+<section id="taxpaid">
+
+<div class="card">
+
+<h2>
+ภาษีที่ชำระ/ถูกหักไว้แล้ว
+</h2>
+
+<div class="grid3">
+
+<div>
+<label>
+ภาษีหัก ณ ที่จ่าย
+</label>
+
+<input
+id="wht"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ภาษีหัก ณ ที่จ่ายเงินปันผล
+</label>
+
+<input
+id="whtDiv"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ภาษีหัก ณ ที่จ่ายดอกเบี้ย
+</label>
+
+<input
+id="whtInt"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ภาษีที่ชำระตาม ภ.ง.ด.94
+</label>
+
+<input
+id="wht94"
+type="number"
+min="0"
+value="0">
+</div>
+
+
+<div>
+<label>
+ภาษีอื่นที่นำมาเครดิตได้
+</label>
+
+<input
+id="whtOther"
+type="number"
+min="0"
+value="0">
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+     5. RESULT
+========================================= -->
+
+<section id="result">
+
+<div class="card">
+
+<div class="actions no-print">
+
+<button
+class="btn primary"
+onclick="calculate()">
+คำนวณ
+</button>
+
+<button
+class="btn secondary"
+onclick="sample()">
+ใส่ข้อมูลตัวอย่าง
+</button>
+
+<button
+class="btn secondary"
+onclick="saveJSON()">
+บันทึก JSON
+</button>
+
+<button
+class="btn secondary"
+onclick="loadJSON()">
+โหลด JSON
+</button>
+
+<button
+class="btn secondary"
+onclick="window.print()">
+พิมพ์ผล
+</button>
+
+<button
+class="btn red"
+onclick="resetAll()">
+ล้างทั้งหมด
+</button>
+
+</div>
+
+
+<div
+id="status"
+class="notice info">
+
+กด “คำนวณ” เพื่อเริ่ม
+
+</div>
+
+
+<div
+id="metrics"
+class="result">
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+รายละเอียดการคำนวณ
+</h2>
+
+<div id="detail">
+-
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Audit Trail
+</h2>
+
+<div
+id="audit"
+class="audit">
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   RULES
+===================================================== */
+
+const RULES = {
+
+    personal:60000,
+
+    spouse:60000,
+
+    child:30000,
+
+    childExtra:60000,
+
+    parent:30000,
+
+    disabled:60000,
+
+    maternity:60000,
+
+    senior:190000,
+
+    sso33:9000,
+
+    sso39:5184,
+
+    life:100000,
+
+    health:25000,
+
+    spouseLife:10000,
+
+    parentHealth:15000,
+
+    homeInt:100000,
+
+    political:10000,
+
+    solar:200000,
+
+    thaiEsg:300000,
+
+    thaiEsgxMax:500000,
+
+    retirementGroup:500000,
+
+    bands:[
+        [150000,0],
+        [300000,.05],
+        [500000,.10],
+        [750000,.15],
+        [1000000,.20],
+        [2000000,.25],
+        [5000000,.30],
+        [Infinity,.35]
+    ]
+
+};
+
+
+/* =====================================================
+   BASIC HELPERS
+===================================================== */
+
+function n(id){
+
+    const el=document.getElementById(id);
+
+    if(!el) return 0;
+
+    return Math.max(
+        0,
+        Number(el.value || 0)
+    );
+
+}
+
+
+function money(x){
+
+    return Number(x || 0).toLocaleString(
+        'th-TH',
+        {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+
+function checked(id){
+
+    const el=document.getElementById(id);
+
+    return !!el?.checked;
+
+}
+
+
+/* =====================================================
+   TAB
+===================================================== */
+
+function tab(id,btn){
+
+    document.querySelectorAll('section')
+        .forEach(x=>x.style.display='none');
+
+    const target=document.getElementById(id);
+
+    if(target){
+        target.style.display='block';
+    }
+
+    document.querySelectorAll('.tab')
+        .forEach(x=>x.classList.remove('active'));
+
+    if(btn){
+        btn.classList.add('active');
+    }
+
+    if(id==='result'){
+        calculate();
+    }
+
+}
+
+
+/* =====================================================
+   BIRTH DATE
+===================================================== */
+
+function calculateAgeFromBirthDate(){
+
+    const input=document.getElementById('birthDate');
+
+    const ageInput=document.getElementById('age');
+
+    const ageDisplay=document.getElementById('ageDisplay');
+
+    const ageDetail=document.getElementById('ageDetail');
+
+    const livedDays=document.getElementById('livedDays');
+
+    const livedDaysRaw=document.getElementById('livedDaysRaw');
+
+    const ageYears=document.getElementById('ageYears');
+
+    const ageMonths=document.getElementById('ageMonths');
+
+    const ageDays=document.getElementById('ageDays');
+
+    const seniorStatus=document.getElementById('seniorStatus');
+
+
+    if(!input || !input.value){
+
+        ageInput.value=0;
+
+        ageDisplay.textContent='ยังไม่ได้ระบุ';
+
+        ageDetail.textContent='กรุณาเลือกวันเดือนปีเกิด';
+
+        livedDays.textContent='-';
+
+        livedDaysRaw.value=0;
+
+        ageYears.textContent='-';
+
+        ageMonths.textContent='-';
+
+        ageDays.textContent='-';
+
+        seniorStatus.innerHTML=
+            'ระบบจะตรวจอายุจากวันเกิดให้อัตโนมัติ';
+
+        return;
+
+    }
+
+
+    const parts=input.value.split('-').map(Number);
+
+    const birth=new Date(
+        Date.UTC(
+            parts[0],
+            parts[1]-1,
+            parts[2]
+        )
+    );
+
+
+    const now=new Date();
+
+    const today=new Date(
+        Date.UTC(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+        )
+    );
+
+
+    if(
+        Number.isNaN(birth.getTime()) ||
+        birth>today
+    ){
+
+        ageInput.value=0;
+
+        ageDisplay.textContent='ไม่ถูกต้อง';
+
+        ageDetail.textContent=
+            'วันเกิดต้องไม่เป็นวันที่ในอนาคต';
+
+        livedDays.textContent='-';
+
+        livedDaysRaw.value=0;
+
+        ageYears.textContent='-';
+
+        ageMonths.textContent='-';
+
+        ageDays.textContent='-';
+
+        seniorStatus.className='notice danger';
+
+        seniorStatus.innerHTML=
+            'วันเกิดไม่ถูกต้อง';
+
+        return;
+
+    }
+
+
+    let years=
+        today.getUTCFullYear()
+        -
+        birth.getUTCFullYear();
+
+
+    let anniversary=new Date(
+        Date.UTC(
+            birth.getUTCFullYear()+years,
+            birth.getUTCMonth(),
+            birth.getUTCDate()
+        )
+    );
+
+
+    if(anniversary>today){
+
+        years--;
+
+        anniversary=new Date(
+            Date.UTC(
+                birth.getUTCFullYear()+years,
+                birth.getUTCMonth(),
+                birth.getUTCDate()
+            )
+        );
+
+    }
+
+
+    let months=0;
+
+    while(true){
+
+        const next=new Date(
+            Date.UTC(
+                anniversary.getUTCFullYear(),
+                anniversary.getUTCMonth()+1,
+                anniversary.getUTCDate()
+            )
+        );
+
+
+        if(next<=today){
+
+            anniversary=next;
+
+            months++;
+
+        }else{
+
+            break;
+
+        }
+
+
+        if(months>=12){
+            break;
+        }
+
+    }
+
+
+    const remainingMs=today-anniversary;
+
+    const remainingDays=Math.floor(
+        remainingMs/
+        (1000*60*60*24)
+    );
+
+
+    const totalDays=Math.floor(
+        (today-birth)/
+        (1000*60*60*24)
+    );
+
+
+    ageInput.value=years;
+
+    livedDaysRaw.value=totalDays;
+
+
+    ageDisplay.textContent=
+        `${years} ปี ${months} เดือน ${remainingDays} วัน`;
+
+
+    ageDetail.textContent=
+        `อายุ ${years} ปีเต็ม`;
+
+
+    livedDays.textContent=
+        totalDays.toLocaleString('th-TH')
+        +
+        ' วัน';
+
+
+    ageYears.textContent=
+        years.toLocaleString('th-TH')
+        +
+        ' ปี';
+
+
+    ageMonths.textContent=
+        months.toLocaleString('th-TH')
+        +
+        ' เดือน';
+
+
+    ageDays.textContent=
+        remainingDays.toLocaleString('th-TH')
+        +
+        ' วัน';
+
+
+    if(years>=65){
+
+        seniorStatus.className='notice ok';
+
+        seniorStatus.innerHTML=
+            '<b>อายุถึง 65 ปีแล้ว</b><br>'+
+            'สามารถตรวจสิทธิยกเว้นเงินได้ 190,000 บาทได้ '+
+            'แต่ยังต้องเป็นไปตามเงื่อนไขทางภาษีอื่น ๆ';
+
+    }else{
+
+        seniorStatus.className='notice info';
+
+        seniorStatus.innerHTML=
+            `<b>อายุ ${years} ปี</b><br>`+
+            `ยังไม่ถึงเกณฑ์อายุ 65 ปี`;
+
+    }
+
+
+}
+
+
+/* =====================================================
+   ACTUAL EXPENSE INPUTS
+===================================================== */
+
+function toggleActual(selectId,inputId){
+
+    const s=document.getElementById(selectId);
+
+    const i=document.getElementById(inputId);
+
+    if(!s || !i) return;
+
+    i.classList.toggle(
+        'hidden',
+        s.value!=='actual'
+    );
+
+}
+
+
+['e3','e5','e6','e7','e8']
+.forEach(id=>{
+
+    const el=document.getElementById(id);
+
+    if(el){
+
+        el.addEventListener(
+            'change',
+            ()=>{
+                toggleActual(
+                    id,
+                    id+'actual'
+                );
+            }
+        );
+
+        toggleActual(
+            id,
+            id+'actual'
+        );
+
+    }
+
+});
+
+
+/* =====================================================
+   PROGRESSIVE TAX
+===================================================== */
+
+function progressive(taxable){
+
+    let tax=0;
+
+    let previous=0;
+
+    const rows=[];
+
+
+    for(
+        const [cap,rate]
+        of RULES.bands
+    ){
+
+        const amount=Math.max(
+            0,
+            Math.min(taxable,cap)
+            -
+            previous
+        );
+
+
+        if(amount>0){
+
+            const taxPart=
+                amount*rate;
+
+            tax+=taxPart;
+
+
+            rows.push({
+                from:previous+1,
+                to:
+                    cap===Infinity
+                    ?
+                    '∞'
+                    :
+                    cap,
+                rate,
+                amount,
+                tax:taxPart
+            });
+
+        }
+
+
+        previous=cap;
+
+
+        if(taxable<=cap){
+            break;
+        }
+
+    }
+
+
+    return {
+        tax,
+        rows
+    };
+
+}
+
+
+/* =====================================================
+   EXPENSES
+===================================================== */
+
+function calculateExpenses(){
+
+    const i1=n('i1');
+
+    const i2=n('i2');
+
+    const i3=n('i3');
+
+    const i5=n('i5');
+
+    const i6=n('i6');
+
+    const i7=n('i7');
+
+    const i8=n('i8');
+
+
+    const e1=Math.min(
+        i1*.5,
+        100000
+    );
+
+
+    const e2=Math.min(
+        i2*.5,
+        100000
+    );
+
+
+    const e3=
+        document.getElementById('e3').value
+        ==='actual'
+        ?
+        n('e3actual')
+        :
+        Math.min(i3*.5,100000);
+
+
+    const e5Rate=
+        document.getElementById('e5').value;
+
+
+    const e5=
+        e5Rate==='actual'
+        ?
+        n('e5actual')
+        :
+        i5*Number(e5Rate)/100;
+
+
+    const e6Rate=
+        document.getElementById('e6').value;
+
+
+    const e6=
+        e6Rate==='actual'
+        ?
+        n('e6actual')
+        :
+        i6*Number(e6Rate)/100;
+
+
+    const e7Rate=
+        document.getElementById('e7').value;
+
+
+    const e7=
+        e7Rate==='actual'
+        ?
+        n('e7actual')
+        :
+        i7*Number(e7Rate)/100;
+
+
+    let e8=0;
+
+
+    if(i8){
+
+        if(
+            document.getElementById('performer').value
+            ==='yes'
+        ){
+
+            /*
+                นักแสดง/นักร้อง/นักดนตรี/
+                นักกีฬาอาชีพ ฯลฯ
+
+                60% สำหรับส่วนแรก
+                40% สำหรับส่วนเกิน
+                รวมค่าใช้จ่ายไม่เกิน 600,000
+            */
+
+            if(i8<=300000){
+
+                e8=i8*.60;
+
+            }else{
+
+                e8=
+                    300000*.60
+                    +
+                    (i8-300000)*.40;
+
+            }
+
+
+            e8=Math.min(
+                e8,
+                600000
+            );
+
+        }else{
+
+            const rate=
+                document.getElementById('e8').value;
+
+
+            e8=
+                rate==='actual'
+                ?
+                n('e8actual')
+                :
+                i8*Number(rate)/100;
+
+        }
+
+    }
+
+
+    return {
+
+        rows:[
+
+            ['40(1)',i1,e1],
+
+            ['40(2)',i2,e2],
+
+            ['40(3)',i3,e3],
+
+            ['40(5)',i5,e5],
+
+            ['40(6)',i6,e6],
+
+            ['40(7)',i7,e7],
+
+            ['40(8)',i8,e8]
+
+        ],
+
+        total:
+            e1+
+            e2+
+            e3+
+            e5+
+            e6+
+            e7+
+            e8
+
+    };
+
+}
+
+
+/* =====================================================
+   DEDUCTIONS
+===================================================== */
+
+function calculateDeductions(){
+
+    const personal=
+        RULES.personal;
+
+
+    const spouse=
+        document.getElementById('marital').value
+        ==='m_no'
+        ?
+        RULES.spouse
+        :
+        0;
+
+
+    const childCount=
+        Math.floor(
+            n('children')
+        );
+
+
+    const youngCount=
+        Math.min(
+            Math.floor(n('youngChildren')),
+            childCount
+        );
+
+
+    /*
+        ตรงนี้เก็บโครงสร้างให้แก้ต่อได้ง่าย
+        กรณีบุตรคนที่ 2 เป็นต้นไปที่เกิด
+        ตั้งแต่ปี 2561
+    */
+
+    let child=
+        childCount*
+        RULES.child;
+
+
+    if(youngCount>0){
+
+        child+=
+            youngCount*
+            RULES.child;
+
+    }
+
+
+    const parent=
+        Math.min(
+            n('parents'),
+            4
+        )*
+        RULES.parent;
+
+
+    const disabled=
+        n('disabledDeps')*
+        RULES.disabled;
+
+
+    const maternity=
+        Math.min(
+            n('maternity'),
+            RULES.maternity
+        );
+
+
+    const sso=
+        Math.min(
+            n('sso33'),
+            RULES.sso33
+        )
+        +
+        Math.min(
+            n('sso39'),
+            RULES.sso39
+        )
+        +
+        n('sso40');
+
+
+    const life=
+        Math.min(
+            n('life'),
+            RULES.life
+        );
+
+
+    const health=
+        Math.min(
+            n('health'),
+            RULES.health
+        );
+
+
+    const lifeHealth=
+        Math.min(
+            RULES.life,
+            life+health
+        );
+
+
+    const spouseLife=
+        Math.min(
+            n('spouseLife'),
+            RULES.spouseLife
+        );
+
+
+    const parentHealth=
+        Math.min(
+            n('parentHealth'),
+            RULES.parentHealth
+        );
+
+
+    const homeInt=
+        Math.min(
+            n('homeInt'),
+            RULES.homeInt
+        );
+
+
+    const retirementRaw=
+        n('pvd')
+        +
+        n('gpf')
+        +
+        n('teacher')
+        +
+        n('rmf')
+        +
+        n('pensionIns');
+
+
+    const retirement=
+        Math.min(
+            retirementRaw,
+            RULES.retirementGroup
+        );
+
+
+    const thaiEsg=
+        Math.min(
+            n('thaiEsg'),
+            RULES.thaiEsg
+        );
+
+
+    const thaiEsgxNew=
+        Math.min(
+            n('thaiEsgxNew'),
+            RULES.thaiEsgxMax
+        );
+
+
+    const solar=
+        Math.min(
+            n('solar'),
+            RULES.solar
+        );
+
+
+    const political=
+        Math.min(
+            n('political'),
+            RULES.political
+        );
+
+
+    return {
+
+        personal,
+
+        spouse,
+
+        child,
+
+        parent,
+
+        disabled,
+
+        maternity,
+
+        sso,
+
+        lifeHealth,
+
+        spouseLife,
+
+        parentHealth,
+
+        homeInt,
+
+        retirement,
+
+        thaiEsg,
+
+        thaiEsgxNew,
+
+        solar,
+
+        political,
+
+        donation:n('donation'),
+
+        donation2x:n('donation2x')
+
+    };
+
+}
+
+
+/* =====================================================
+   SENIOR EXEMPTION
+===================================================== */
+
+function seniorExemption(
+    grossAfterExpense
+){
+
+    const age=
+        Number(
+            document.getElementById('age').value
+        );
+
+
+    if(
+        age>=65 &&
+        checked('seniorEligible')
+    ){
+
+        return Math.min(
+            RULES.senior,
+            Math.max(
+                0,
+                grossAfterExpense
+            )
+        );
+
+    }
+
+
+    return 0;
+
+}
+
+
+/* =====================================================
+   METHOD 2
+===================================================== */
+
+function calculateMethod2(
+    nonSalaryIncome
+){
+
+    /*
+        วิธีที่ 2:
+        ตรวจเฉพาะกรณีที่เข้าเงื่อนไข
+        และมีฐานที่ต้องนำมาคำนวณ
+
+        หากภาษีไม่เกิน 5,000 บาท
+        ระบบถือเป็น 0 ตามเกณฑ์ที่เกี่ยวข้อง
+    */
+
+    if(
+        nonSalaryIncome<
+        120000
+    ){
+
+        return 0;
+
+    }
+
+
+    const tax=
+        nonSalaryIncome*
+        .005;
+
+
+    if(tax<=5000){
+
+        return 0;
+
+    }
+
+
+    return tax;
+
+}
+
+
+/* =====================================================
+   WARNINGS
+===================================================== */
+
+function getWarnings(){
+
+    const warnings=[];
+
+
+    if(
+        checked('foreign')
+    ){
+
+        warnings.push(
+            'มีเงินได้จากต่างประเทศ/Foreign Tax Credit — ต้องตรวจปีที่เกิดเงินได้ การนำเข้าไทย และเครดิตภาษีต่างประเทศ'
+        );
+
+    }
+
+
+    if(
+        checked('propertySpecial')
+    ){
+
+        warnings.push(
+            'มีกรณีขายอสังหาริมทรัพย์หรือคำนวณภาษีแบบพิเศษ — ระบบนี้ยังไม่สร้างสูตรเฉพาะกรณีให้เดา'
+        );
+
+    }
+
+
+    if(
+        checked('special40')
+    ){
+
+        warnings.push(
+            'มีเงินได้ 40(3)/(4) กรณีพิเศษ — ต้องตรวจเอกสารและวิธีเสียภาษีเฉพาะ'
+        );
+
+    }
+
+
+    if(
+        checked('otherSpecial')
+    ){
+
+        warnings.push(
+            'มีกรณีพิเศษอื่น — ห้ามถือผลลัพธ์เป็นผลพร้อมยื่นจนกว่าจะตรวจกรณีดังกล่าว'
+        );
+
+    }
+
+
+    if(
+        n('i8') &&
+        document.getElementById('performer').value!=='yes'
+    ){
+
+        warnings.push(
+            '40(8) ต้องเลือกอัตราให้ตรงกับประเภทกิจการจริง ระบบไม่สามารถจำแนกประเภทกิจการจากยอดเงินได้เพียงอย่างเดียว'
+        );
+
+    }
+
+
+    if(
+        n('thaiEsgxLtf')
+    ){
+
+        warnings.push(
+            'Thai ESGX จาก LTF มีสิทธิเฉพาะรายปี ระบบยังไม่เดาสิทธิจากยอด LTF'
+        );
+
+    }
+
+
+    if(
+        n('thaiEsgxNew')
+    ){
+
+        warnings.push(
+            'Thai ESGX ซื้อใหม่ต้องตรวจช่วงเวลาซื้อและเงื่อนไขของมาตรการปี 2569'
+        );
+
+    }
+
+
+    return warnings;
+
+}
+
+
+/* =====================================================
+   BUILD CALCULATION
+===================================================== */
+
+function buildCalculation(){
+
+    calculateAgeFromBirthDate();
+
+
+    const expenses=
+        calculateExpenses();
+
+
+    const deductions=
+        calculateDeductions();
+
+
+    const i1=n('i1');
+
+    const i2=n('i2');
+
+    const i3=n('i3');
+
+    const i4=n('i4');
+
+    const i5=n('i5');
+
+    const i6=n('i6');
+
+    const i7=n('i7');
+
+    const i8=n('i8');
+
+
+    const dividend=
+        n('div');
+
+
+    const gross=
+        i1+
+        i2+
+        i3+
+        i4+
+        i5+
+        i6+
+        i7+
+        i8;
+
+
+    /*
+        เงินปันผลที่นำมารวมคำนวณ
+    */
+
+    const grossWithDividend=
+        gross+
+        dividend;
+
+
+    const afterExpense=
+        Math.max(
+            0,
+            grossWithDividend-
+            expenses.total
+        );
+
+
+    const senior=
+        seniorExemption(
+            afterExpense
+        );
+
+
+    const incomeAfterSenior=
+        Math.max(
+            0,
+            afterExpense-
+            senior
+        );
+
+
+    const basicDeduction=
+        deductions.personal
+        +
+        deductions.spouse
+        +
+        deductions.child
+        +
+        deductions.parent
+        +
+        deductions.disabled
+        +
+        deductions.maternity
+        +
+        deductions.sso
+        +
+        deductions.lifeHealth
+        +
+        deductions.spouseLife
+        +
+        deductions.parentHealth
+        +
+        deductions.homeInt
+        +
+        deductions.retirement
+        +
+        deductions.thaiEsg
+        +
+        deductions.thaiEsgxNew
+        +
+        deductions.solar
+        +
+        deductions.political;
+
+
+    const afterBasic=
+        Math.max(
+            0,
+            incomeAfterSenior-
+            basicDeduction
+        );
+
+
+    /*
+        เงินบริจาค 2 เท่า
+        จำกัด 10% ของฐานหลังหักค่าใช้จ่าย
+        และค่าลดหย่อนตามเงื่อนไข
+    */
+
+    const donation2x=
+        Math.min(
+            deductions.donation2x*2,
+            afterBasic*.10
+        );
+
+
+    const afterDonation2x=
+        Math.max(
+            0,
+            afterBasic-
+            donation2x
+        );
+
+
+    const donation=
+        Math.min(
+            deductions.donation,
+            afterDonation2x*.10
+        );
+
+
+    const taxable=
+        Math.max(
+            0,
+            afterDonation2x-
+            donation
+        );
+
+
+    const progressiveResult=
+        progressive(
+            taxable
+        );
+
+
+    /*
+        วิธีที่ 2
+        ไม่รวมเงินได้ 40(1)
+    */
+
+    const nonSalary=
+        i2+
+        i3+
+        i4+
+        i5+
+        i6+
+        i7+
+        i8;
+
+
+    const method2=
+        calculateMethod2(
+            nonSalary
+        );
+
+
+    /*
+        ภาษีที่ต้องใช้
+        ตามหลักการเปรียบเทียบวิธี
+    */
+
+    const regularTax=
+        Math.max(
+            progressiveResult.tax,
+            method2
+        );
+
+
+    /*
+        Final Tax
+    */
+
+    const dividendFinal=
+        dividend*
+        .10;
+
+
+    const interestFinal=
+        n('interestFinal')*
+        .15;
+
+
+    const dividendCredit=
+        n('divCr');
+
+
+    const taxBeforeCredit=
+        regularTax+
+        dividendFinal+
+        interestFinal-
+        dividendCredit;
+
+
+    const credits=
+        n('wht')
+        +
+        n('whtDiv')
+        +
+        n('whtInt')
+        +
+        n('wht94')
+        +
+        n('whtOther');
+
+
+    const balance=
+        taxBeforeCredit-
+        credits;
+
+
+    return {
+
+        expenses,
+
+        deductions,
+
+        gross,
+
+        senior,
+
+        basicDeduction,
+
+        donation2x,
+
+        donation,
+
+        taxable,
+
+        progressiveResult,
+
+        method2,
+
+        regularTax,
+
+        dividendFinal,
+
+        interestFinal,
+
+        dividendCredit,
+
+        taxBeforeCredit,
+
+        credits,
+
+        balance
+
+    };
+
+}
+
+
+/* =====================================================
+   CALCULATE / DISPLAY
+===================================================== */
+
+function calculate(){
+
+    calculateAgeFromBirthDate();
+
+
+    const result=
+        buildCalculation();
+
+
+    const warnings=
+        getWarnings();
+
+
+    const status=
+        document.getElementById('status');
+
+
+    if(warnings.length){
+
+        status.className=
+            'notice warn';
+
+
+        status.innerHTML=
+            '<b>ผลลัพธ์ยังต้องตรวจสอบเพิ่มเติม</b><br>'+
+            warnings
+                .map(x=>'• '+x)
+                .join('<br>');
+
+    }else{
+
+        status.className=
+            'notice ok';
+
+
+        status.innerHTML=
+            '<b>คำนวณเสร็จแล้ว</b><br>'+
+            'ไม่พบรายการพิเศษที่ถูกทำเครื่องหมายไว้';
+
+    }
+
+
+    document.getElementById('metrics').innerHTML=`
+
+        <div class="metric">
+
+            <div class="k">
+                เงินได้รวม
+            </div>
+
+            <div class="v">
+                ${money(result.gross)}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="k">
+                ค่าใช้จ่าย
+            </div>
+
+            <div class="v">
+                ${money(result.expenses.total)}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="k">
+                เงินได้สุทธิ
+            </div>
+
+            <div class="v">
+                ${money(result.taxable)}
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="k">
+                ภาษีก่อนเครดิต
+            </div>
+
+            <div class="v">
+                ${money(result.taxBeforeCredit)}
+            </div>
+
+        </div>
+
+    `;
+
+
+    const rows=
+        result.progressiveResult.rows
+        .map(row=>`
+
+            <tr>
+
+                <td>
+                    ${row.from.toLocaleString()}
+                    –
+                    ${String(row.to)
+                        .replace('Infinity','∞')}
+                </td>
+
+                <td>
+                    ${(row.rate*100).toFixed(0)}%
+                </td>
+
+                <td>
+                    ${money(row.amount)}
+                </td>
+
+                <td>
+                    ${money(row.tax)}
+                </td>
+
+            </tr>
+
+        `)
+        .join('');
+
+
+    const finalLabel=
+        result.balance>=0
+        ?
+        'ภาษีต้องชำระเพิ่ม'
+        :
+        'ภาษีชำระเกิน/อาจขอคืน';
+
+
+    document.getElementById('detail').innerHTML=`
+
+        <h3>
+            1. เงินได้
+        </h3>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>รายการ</th>
+                    <th>จำนวนเงิน</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>เงินได้รวม</td>
+                    <td>${money(result.gross)}</td>
+                </tr>
+
+                <tr>
+                    <td>ค่าใช้จ่าย</td>
+                    <td>${money(result.expenses.total)}</td>
+                </tr>
+
+                <tr>
+                    <td>ยกเว้นอายุ 65+</td>
+                    <td>${money(result.senior)}</td>
+                </tr>
+
+                <tr>
+                    <td>ค่าลดหย่อนก่อนบริจาค</td>
+                    <td>${money(result.basicDeduction)}</td>
+                </tr>
+
+                <tr>
+                    <td>บริจาค 2 เท่า</td>
+                    <td>${money(result.donation2x)}</td>
+                </tr>
+
+                <tr>
+                    <td>บริจาคทั่วไป</td>
+                    <td>${money(result.donation)}</td>
+                </tr>
+
+                <tr>
+
+                    <td>
+                        <b>เงินได้สุทธิ</b>
+                    </td>
+
+                    <td>
+                        <b>
+                            ${money(result.taxable)}
+                        </b>
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+        <h3>
+            2. ภาษีแบบขั้นบันได
+        </h3>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        ช่วงเงินได้สุทธิ
+                    </th>
+
+                    <th>
+                        อัตรา
+                    </th>
+
+                    <th>
+                        ฐานช่วง
+                    </th>
+
+                    <th>
+                        ภาษี
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${rows}
+
+            </tbody>
+
+        </table>
+
+
+        <h3>
+            3. วิธีที่ 2
+        </h3>
+
+        <p>
+            ${money(result.method2)} บาท
+        </p>
+
+
+        <h3>
+            4. ภาษีสุดท้าย
+        </h3>
+
+
+        <table>
+
+            <tbody>
+
+                <tr>
+                    <td>ภาษีวิธีที่ 1/2</td>
+                    <td>${money(result.regularTax)}</td>
+                </tr>
+
+                <tr>
+                    <td>ภาษีเงินปันผล 10%</td>
+                    <td>${money(result.dividendFinal)}</td>
+                </tr>
+
+                <tr>
+                    <td>ภาษีดอกเบี้ย 15%</td>
+                    <td>${money(result.interestFinal)}</td>
+                </tr>
+
+                <tr>
+                    <td>เครดิตภาษีเงินปันผล</td>
+                    <td>-${money(result.dividendCredit)}</td>
+                </tr>
+
+                <tr>
+
+                    <td>
+                        <b>ภาษีก่อนเครดิต WHT</b>
+                    </td>
+
+                    <td>
+                        <b>
+                            ${money(result.taxBeforeCredit)}
+                        </b>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>ภาษีที่หัก/ชำระไว้แล้ว</td>
+                    <td>-${money(result.credits)}</td>
+                </tr>
+
+                <tr>
+
+                    <td>
+                        <b>${finalLabel}</b>
+                    </td>
+
+                    <td>
+                        <b>
+                            ${money(
+                                Math.abs(result.balance)
+                            )}
+                        </b>
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    const audit=[
+
+        `อายุ = ${document.getElementById('age').value} ปี`,
+
+        `จำนวนวันที่มีชีวิตอยู่ = ${document.getElementById('livedDaysRaw').value} วัน`,
+
+        `จำนวนวันที่อยู่ประเทศไทย = ${n('thaiDays')} วัน`,
+
+        `เงินได้รวม = ${money(result.gross)}`,
+
+        `ค่าใช้จ่าย = ${money(result.expenses.total)}`,
+
+        `ยกเว้นอายุ 65+ = ${money(result.senior)}`,
+
+        `ค่าลดหย่อน = ${money(result.basicDeduction)}`,
+
+        `บริจาค 2x = ${money(result.donation2x)}`,
+
+        `บริจาคทั่วไป = ${money(result.donation)}`,
+
+        `เงินได้สุทธิ = ${money(result.taxable)}`,
+
+        `ภาษีวิธีที่ 1 = ${money(result.progressiveResult.tax)}`,
+
+        `ภาษีวิธีที่ 2 = ${money(result.method2)}`,
+
+        `ภาษีที่ใช้ = ${money(result.regularTax)}`,
+
+        `ภาษีเงินปันผล = ${money(result.dividendFinal)}`,
+
+        `ภาษีดอกเบี้ย = ${money(result.interestFinal)}`,
+
+        `เครดิตเงินปันผล = ${money(result.dividendCredit)}`,
+
+        `ภาษีก่อนเครดิต = ${money(result.taxBeforeCredit)}`,
+
+        `เครดิตภาษีที่กรอก = ${money(result.credits)}`,
+
+        `ผลต่าง = ${money(result.balance)}`,
+
+        ...warnings.map(
+            x=>'คำเตือน: '+x
+        )
+
+    ];
+
+
+    document.getElementById('audit').innerHTML=
+        audit
+        .map(
+            x=>`<div>${x}</div>`
+        )
+        .join('');
+
+}
+
+
+/* =====================================================
+   SAVE / LOAD
+===================================================== */
+
+function allInputs(){
+
+    return [
+        ...document.querySelectorAll(
+            'input,select'
+        )
+    ]
+    .filter(
+        el=>el.id
+    )
+    .reduce(
+        (obj,el)=>{
+
+            obj[el.id]=
+                el.type==='checkbox'
+                ?
+                el.checked
+                :
+                el.value;
+
+            return obj;
+
+        },
+        {}
+    );
+
+}
+
+
+function applyData(data){
+
+    Object.entries(data)
+    .forEach(
+        ([id,value])=>{
+
+            const el=
+                document.getElementById(id);
+
+            if(!el){
+                return;
+            }
+
+
+            if(
+                el.type==='checkbox'
+            ){
+
+                el.checked=
+                    Boolean(value);
+
+            }else{
+
+                el.value=value;
+
+            }
+
+        }
+    );
+
+
+    [
+        'e3',
+        'e5',
+        'e6',
+        'e7',
+        'e8'
+    ]
+    .forEach(
+        id=>{
+
+            toggleActual(
+                id,
+                id+'actual'
+            );
+
+        }
+    );
+
+
+    calculateAgeFromBirthDate();
+
+}
+
+
+/* =====================================================
+   SAVE JSON
+===================================================== */
+
+function saveJSON(){
+
+    const data=
+        JSON.stringify(
+            allInputs(),
+            null,
+            2
+        );
+
+
+    const blob=
+        new Blob(
+            [data],
+            {
+                type:'application/json'
+            }
+        );
+
+
+    const url=
+        URL.createObjectURL(blob);
+
+
+    const a=
+        document.createElement('a');
+
+
+    a.href=url;
+
+    a.download=
+        'tax2569-v6-data.json';
+
+
+    a.click();
+
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================================
+   LOAD JSON
+===================================================== */
+
+function loadJSON(){
+
+    const input=
+        document.createElement('input');
+
+
+    input.type='file';
+
+    input.accept=
+        '.json,application/json';
+
+
+    input.onchange=()=>{
+
+        const file=
+            input.files[0];
+
+
+        if(!file){
+            return;
+        }
+
+
+        const reader=
+            new FileReader();
+
+
+        reader.onload=()=>{
+
+            try{
+
+                const data=
+                    JSON.parse(
+                        reader.result
+                    );
+
+
+                applyData(data);
+
+                calculate();
+
+
+            }catch(error){
+
+                alert(
+                    'ไฟล์ JSON ไม่ถูกต้อง'
+                );
+
+            }
+
+        };
+
+
+        reader.readAsText(file);
+
+    };
+
+
+    input.click();
+
+}
+
+
+/* =====================================================
+   SAMPLE
+===================================================== */
+
+function sample(){
+
+    applyData({
+
+        birthDate:'2000-05-15',
+
+        marital:'single',
+
+        spouseIncome:0,
+
+        children:1,
+
+        youngChildren:0,
+
+        parents:0,
+
+        disabledDeps:0,
+
+        maternity:0,
+
+        thaiDays:365,
+
+
+        i1:360000,
+
+        i2:0,
+
+        i3:0,
+
+        i4:0,
+
+        i5:0,
+
+        i6:0,
+
+        i7:0,
+
+        i8:0,
+
+
+        e3:'50',
+
+        e5:'30',
+
+        e6:'60',
+
+        e7:'70',
+
+        e8:'60',
+
+        performer:'no',
+
+
+        div:0,
+
+        divCr:0,
+
+        interestFinal:0,
+
+
+        foreign:false,
+
+        propertySpecial:false,
+
+        special40:false,
+
+        otherSpecial:false,
+
+
+        sso33:9000,
+
+        sso39:0,
+
+        sso40:0,
+
+        life:0,
+
+        health:0,
+
+        spouseLife:0,
+
+        parentHealth:0,
+
+        homeInt:0,
+
+        donation:0,
+
+        donation2x:0,
+
+        political:0,
+
+        solar:0,
+
+
+        pvd:0,
+
+        gpf:0,
+
+        teacher:0,
+
+        rmf:0,
+
+        pensionIns:0,
+
+        thaiEsg:0,
+
+        thaiEsgxNew:0,
+
+        thaiEsgxLtf:0,
+
+        seniorEligible:false,
+
+
+        wht:0,
+
+        whtDiv:0,
+
+        whtInt:0,
+
+        wht94:0,
+
+        whtOther:0
+
+    });
+
+
+    calculate();
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetAll(){
+
+    if(
+        !confirm(
+            'ต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?'
+        )
+    ){
+
+        return;
+
+    }
+
+
+    document
+        .querySelectorAll(
+            'input'
+        )
+        .forEach(
+            el=>{
+
+                if(
+                    el.type==='checkbox'
+                ){
+
+                    el.checked=false;
+
+                }else{
+
+                    el.value='0';
+
+                }
+
+            }
+        );
+
+
+    document.getElementById(
+        'birthDate'
+    ).value='';
+
+
+    document.getElementById(
+        'age'
+    ).value='0';
+
+
+    document.getElementById(
+        'livedDaysRaw'
+    ).value='0';
+
+
+    document.getElementById(
+        'ageDisplay'
+    ).textContent=
+        'ยังไม่ได้ระบุ';
+
+
+    document.getElementById(
+        'ageDetail'
+    ).textContent=
+        'กรุณาเลือกวันเดือนปีเกิด';
+
+
+    document.getElementById(
+        'livedDays'
+    ).textContent='-';
+
+
+    document.getElementById(
+        'ageYears'
+    ).textContent='-';
+
+
+    document.getElementById(
+        'ageMonths'
+    ).textContent='-';
+
+
+    document.getElementById(
+        'ageDays'
+    ).textContent='-';
+
+
+    document.getElementById(
+        'thaiDays'
+    ).value=365;
+
+
+    document.getElementById(
+        'age'
+    ).value=0;
+
+
+    document.getElementById(
+        'marital'
+    ).value='single';
+
+
+    document
+        .querySelectorAll(
+            'select'
+        )
+        .forEach(
+            el=>{
+
+                if(
+                    el.id!=='marital'
+                ){
+
+                    el.selectedIndex=0;
+
+                }
+
+            }
+        );
+
+
+    calculate();
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+document
+    .getElementById('birthDate')
+    .addEventListener(
+        'change',
+        ()=>{
+            calculateAgeFromBirthDate();
+            calculate();
+        }
+    );
+
+
+document
+    .getElementById('seniorEligible')
+    .addEventListener(
+        'change',
+        calculate
+    );
+
+
+/*
+    คำนวณอายุทันทีเมื่อเปิดเว็บ
+*/
+
+calculateAgeFromBirthDate();
+
+calculate();
+
+</script>
+
+</body>
+</html>
